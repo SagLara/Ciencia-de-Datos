@@ -37,6 +37,15 @@
     <input type="texto" name="pais" placeholder="Ingrese el Pais">
     <button>Buscar</button>
 </form>
+<p>
+    Resumen de casos registrados por día, con fecha inicio y fecha fin dada por el usuario
+</p>
+
+<form action="{{ url_for('view_consult_fecha') }} " method="POST">
+    <input type="texto" name="inicio" placeholder="Ingrese fecha inicio con formato: dd-mm-aaaa">
+    <input type="texto" name="fin" placeholder="Ingrese fecha fin con formato: dd-mm-aaaa">
+    <button>Buscar</button>
+</form>
 
 {% endblock %}
 

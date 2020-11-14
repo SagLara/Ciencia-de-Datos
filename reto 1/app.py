@@ -1,5 +1,6 @@
 import pandas as pd
 from sodapy import Socrata
+import dateutil
 from flask import Flask,render_template,request
 
 # Unauthenticated client only works with public data sets. Note 'None'
@@ -22,16 +23,21 @@ results_df = pd.DataFrame.from_records(results)
 #prub = results_df.loc[10:20,:]
 #prub = results_df.loc[:10,:]
 ##df = pd.DataFrame({'A': [0, 1, 2, 3, 4], 'B': [5, 6, 7, 8, 9], 'C': ['a', 'b', 'c--', 'd', 'e']})
-
-
+results_df['fecha_reporte_web'] = results_df['fecha_reporte_web'].apply(dateutil.parser.parse)
 def resultVirusPais(dataframe, pais):
   importados=dataframe[dataframe['fuente_tipo_contagio']=='Importado']
   up=pais.upper()
   result=importados[importados['pais_viajo_1_nom']==up]
   return result['sexo'].value_counts()
 
-
-
+def resultCasosPorDia(results_df,inicio,fin):
+  inicio= dateutil.parser.parse(inicio, dayfirst=True)
+  fin= dateutil.parser.parse(fin, dayfirst=True)
+  resultadosDia=results_df[(results_df['fecha_reporte_web']>=inicio) & (results_df['fecha_reporte_web']<=fin) ]
+  resultadosDia=resultadosDia.sort_values('fecha_reporte_web')
+  result=resultadosDia.groupby('fecha_reporte_web',as_index=False)['departamento'].count()
+  resultado=result.rename(columns={'fecha_reporte_web': 'fecha','departamento': 'Casos'})
+  return resultado
 
 app = Flask(__name__)
 
@@ -58,7 +64,7 @@ def view_df():
     #return render_template("dataframe.html",nombre=nombre,table=table)
     return view.to_html(header="true", table_id="table")
 
-@app.route("/consultas", methods=["POST"])
+@app.route("/consulta 1", methods=["POST"])
 def view_consult_pais():
     pais = request.form.get("pais")
     res= resultVirusPais(results_df,str(pais))
@@ -69,6 +75,17 @@ def view_consult_pais():
     #return render_template("dataframe.html",nombre=nombre,table=table)
     return result.to_html(header="true", table_id="table")
 
+@app.route("/consulta 2", methods=["POST"])
+def view_consult_fecha():
+    inicio= request.form.get("inicio")
+    fin = request.form.get("fin")
+    res= resultCasosPorDia(results_df,str(inicio),str(fin))
+    result= pd.DataFrame(res)
+    #print("CONSULT: ",dato," HASTA:",rango)
+    #view = results_df.loc[int(dato):int(rango),:]
+    #table=df.to_html(header="true", table_id="table")
+    #return render_template("dataframe.html",nombre=nombre,table=table)
+    return result.to_html(header="true", table_id="table")
 
 if __name__ == "__main__":
     app.run(debug=True, port= 5000) 
