@@ -126,6 +126,23 @@
     <input type="texto" name="fin" placeholder="Ingrese fecha fin con formato: dd-mm-aaaa">
     <button>Buscar</button>
 </form>
+<p>
+    Resumen de casos de fallecidos por Covid-19, con fecha inicio y fecha fin dada por el usuario
+</p>
+
+<form action="{{ url_for('view_consult_muertos') }} " method="POST">
+    <input type="texto" name="inicio" placeholder="Ingrese fecha inicio con formato: dd-mm-aaaa">
+    <input type="texto" name="fin" placeholder="Ingrese fecha fin con formato: dd-mm-aaaa">
+    <button>Buscar</button>
+</form>
+<p>
+    Cuantos hombres y mujeres han tenido Covid-19 en "X" ciudad.
+</p>
+
+<form action="{{ url_for('view_consult_ciudad') }} " method="POST">
+    <input type="texto" name="ciudad" placeholder="Ingrese la ciudad">
+    <button>Buscar</button>
+</form>
 
 {% endblock %}
 
