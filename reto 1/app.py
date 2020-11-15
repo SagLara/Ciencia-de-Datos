@@ -24,6 +24,7 @@ results_df = pd.DataFrame.from_records(results)
 #prub = results_df.loc[:10,:]
 ##df = pd.DataFrame({'A': [0, 1, 2, 3, 4], 'B': [5, 6, 7, 8, 9], 'C': ['a', 'b', 'c--', 'd', 'e']})
 results_df['fecha_reporte_web'] = results_df['fecha_reporte_web'].apply(dateutil.parser.parse)
+
 def resultVirusPais(dataframe, pais):
   importados=dataframe[dataframe['fuente_tipo_contagio']=='Importado']
   up=pais.upper()
@@ -38,6 +39,14 @@ def resultCasosPorDia(results_df,inicio,fin):
   result=resultadosDia.groupby('fecha_reporte_web',as_index=False)['departamento'].count()
   resultado=result.rename(columns={'fecha_reporte_web': 'fecha','departamento': 'Casos'})
   return resultado
+
+#def filtros(filtros,dataframe):
+# 	fecha_reporte_web 	id_de_caso 	fecha_de_notificaci_n 	departamento 	#
+#  departamento_nom 	ciudad_municipio 	ciudad_municipio_nom 	edad 	#
+# unidad_medida 	sexo 	fuente_tipo_contagio 	ubicacion 	estado 
+# 	pais_viajo_1_cod 	pais_viajo_1_nom 	recuperado 	fecha_inicio_sintomas 
+# 	fecha_diagnostico 	fecha_recuperado 	tipo_recuperacion 	per_etn_ 	
+# nom_grupo_ 	fecha_muerte
 
 app = Flask(__name__)
 
@@ -57,11 +66,26 @@ def home():
 def view_df():
     dato = request.form.get("dato")
     opcion = request.form.get("opcion")
+
+    filtros=[]
+    todos=False
+
+    if request.method == 'POST':
+        print(request.form.getlist('filtros'))
+        filtros=request.form.getlist('filtros')
+    
     rango=int(dato)+int(opcion)
     print("DESDE: ",dato," HASTA:",rango)
-    view = results_df.loc[int(dato):int(rango),:]
-    #table=df.to_html(header="true", table_id="table")
-    #return render_template("dataframe.html",nombre=nombre,table=table)
+
+    for f in filtros:
+        if f=="all":
+            todos=True
+
+    if (todos or filtros==[]):
+        view = results_df.loc[int(dato):int(rango),:]
+    else:
+        view = results_df.loc[int(dato):int(rango),filtros]
+
     return view.to_html(header="true", table_id="table")
 
 @app.route("/consulta 1", methods=["POST"])
@@ -72,7 +96,7 @@ def view_consult_pais():
     #print("CONSULT: ",dato," HASTA:",rango)
     #view = results_df.loc[int(dato):int(rango),:]
     #table=df.to_html(header="true", table_id="table")
-    #return render_template("dataframe.html",nombre=nombre,table=table)
+    #return render_template("consulta-1.html",pais=pais)
     return result.to_html(header="true", table_id="table")
 
 @app.route("/consulta 2", methods=["POST"])
@@ -89,8 +113,6 @@ def view_consult_fecha():
 
 if __name__ == "__main__":
     app.run(debug=True, port= 5000) 
-
-
 
 
 

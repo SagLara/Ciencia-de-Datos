@@ -23,7 +23,87 @@
         <option value="500">500</option>
         <option value="1000">1000</option>
       </select>
-    <input type="texto" name="dato" placeholder="Ingrese dato inicial">
+    <input type="texto" name="dato" placeholder="Ingrese dato inicial"><br>
+
+    <h1>Filtros</h1>
+
+    <input type="checkbox" name="filtros" value="all">
+    <label for="fil_all"> Todos</label><br>
+
+    <div class="row">
+
+        <div class="col">
+            <input type="checkbox" name="filtros" value="fecha_reporte_web"> Fecha de reporte web &emsp;
+            <input type="checkbox" name="filtros" value="departamento_nom"> Nombre Departamento &emsp;
+            <input type="checkbox" name="filtros" value="ciudad_municipio_nom"> Nombre Ciudad / Municipio &emsp; <br>
+
+        </div>
+
+        <div class="col">
+
+            <input type="checkbox" name="filtros" value="fecha_de_notificaci_n">
+            <label for="f_notificacion"> Fecha de notificacion </label>&emsp;
+
+            <input type="checkbox" name="filtros" value="pais_viajo_1_nom">
+            <label for="vehicle1"> Pais de donde viajo</label> &emsp;
+
+            <input type="checkbox" name="filtros" value="fecha_muerte">
+            <label for="vehicle3"> Fecha Muerte</label><br>&emsp;
+
+        </div>
+
+        <div class="col">
+
+            <input type="checkbox" name="filtros" value="fecha_inicio_sintomas">
+            <label for="vehicle1"> Fecha de inicio de Sintomas</label>&emsp;
+
+            <input type="checkbox" name="filtros" value="fecha_diagnostico">
+            <label for="vehicle1"> Fecha de Diagnostico</label>&emsp;
+
+            <input type="checkbox" name="filtros" value="fecha_recuperado">
+            <label for="vehicle1"> Fecha de Recuperacion</label><br>&emsp;
+
+        </div>
+
+
+        <div class="col">
+
+            <input type="checkbox" name="filtros" value="edad">
+            <label for="vehicle1"> Edad</label>&emsp;
+
+            <input type="checkbox" name="filtros" value="sexo">
+            <label for="vehicle1"> Sexo</label>&emsp;
+
+            <input type="checkbox" name="filtros" value="fuente_tipo_contagio">
+            <label for="vehicle1"> Tipo de Contagio</label><br>&emsp;
+
+        </div>
+
+        <div class="col">
+
+            <input type="checkbox" name="filtros" value="ubicacion">
+            <label for="vehicle1"> Ubicacion</label>&emsp;
+
+            <input type="checkbox" name="filtros" value="estado">
+            <label for="vehicle1"> Estado</label> &emsp;
+
+            <input type="checkbox" name="filtros" value="tipo_recuperacion">
+            <label for="vehicle1"> Tipo recuperacion</label><br> <br> &emsp;
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
     <button>Enviar</button>
 </form>
 
