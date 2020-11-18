@@ -3,6 +3,9 @@ from sodapy import Socrata
 import dateutil
 from flask import Flask,render_template,request
 
+#https://www.google.com/
+
+
 # Unauthenticated client only works with public data sets. Note 'None'
 # in place of application token, and no username or password:
 client = Socrata("www.datos.gov.co", None)
@@ -15,7 +18,7 @@ client = Socrata("www.datos.gov.co", None)
 
 # First 1000000 results, returned as JSON from API / converted to Python list of
 # dictionaries by sodapy.
-results = client.get("gt2j-8ykr", limit=1200000) #12000000
+results = client.get("gt2j-8ykr", limit=500000 ,offset=1000000) #12000000
 
 # Convert to pandas DataFrame
 results_df = pd.DataFrame.from_records(results)
