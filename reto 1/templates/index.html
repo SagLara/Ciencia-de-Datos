@@ -1,148 +1,190 @@
 {% extends "layout.html" %} {% block body%}
-<h1>Bienvenido</h1>
+<div class="container">
+    <h1 class="text-center"><strong>Bienvenido</strong></h1>
+    <hr>
+    <p>
+        Para ver los datos de Casos Positivos de Covid-19 en colombia, &ensp; ingrese la cantidad de datos que desea ver, seguido a esto,
+        <br> ingrese desde que dato quiere que se impriman las filas.
+    </p>
+    <hr>
+</div>
 
-<p>
-    Para ver los datos de Casos Positivos de Covid-19 en colombia,
-    <br> ingrese la cantidad de datos que desea ver,
-    <br> seguido a esto, ingrese desde que dato quiere que se impriman las filas.
-    <br> Ingrese un numero de 1 a 1'000.000)(1 millon)
-</p>
+<div class="container">
+    <form action="{{ url_for('view_df') }} " method="POST">
+        <h2><strong>Visualizar datos</strong></h2>
 
-<form action="{{ url_for('view_df') }} " method="POST">
-    <select class="custom-select" name="opcion">
-        <option selected>Rango</option>
-        <option value="1">1</option>
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="25">25</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-        <option value="200">200</option>
-        <option value="250">250</option>
-        <option value="500">500</option>
-        <option value="1000">1000</option>
-      </select>
-    <input type="texto" name="dato" placeholder="Ingrese dato inicial"><br>
+        <div class="container-sm">
+            <select class="custom-select mdb-select md-form colorful-select dropdown-primary" name="opcion">
+                <option selected>Rango</option>
+                <option value="1">1</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+            </select>
 
-    <h1>Filtros</h1>
-
-    <input type="checkbox" name="filtros" value="all">
-    <label for="fil_all"> Todos</label><br>
-
-    <div class="row">
-
-        <div class="col">
-            <input type="checkbox" name="filtros" value="fecha_reporte_web"> Fecha de reporte web &emsp;
-            <input type="checkbox" name="filtros" value="departamento_nom"> Nombre Departamento &emsp;
-            <input type="checkbox" name="filtros" value="ciudad_municipio_nom"> Nombre Ciudad / Municipio &emsp; <br>
-
-        </div>
-
-        <div class="col">
-
-            <input type="checkbox" name="filtros" value="fecha_de_notificaci_n">
-            <label for="f_notificacion"> Fecha de notificacion </label>&emsp;
-
-            <input type="checkbox" name="filtros" value="pais_viajo_1_nom">
-            <label for="vehicle1"> Pais de donde viajo</label> &emsp;
-
-            <input type="checkbox" name="filtros" value="fecha_muerte">
-            <label for="vehicle3"> Fecha Muerte</label><br>&emsp;
-
-        </div>
-
-        <div class="col">
-
-            <input type="checkbox" name="filtros" value="fecha_inicio_sintomas">
-            <label for="vehicle1"> Fecha de inicio de Sintomas</label>&emsp;
-
-            <input type="checkbox" name="filtros" value="fecha_diagnostico">
-            <label for="vehicle1"> Fecha de Diagnostico</label>&emsp;
-
-            <input type="checkbox" name="filtros" value="fecha_recuperado">
-            <label for="vehicle1"> Fecha de Recuperacion</label><br>&emsp;
-
+            <div class="md-form mb-4 mt-n2">
+                <input type="text" id="dato" name="dato" class="form-control">
+                <label for="dato">Ingrese dato inicial</label>
+                <small class="form-text text-muted">Ingrese un numero de 1 a 1'000.000)(1 millon)</small>
+            </div>
         </div>
 
 
-        <div class="col">
+        <h2><strong>Filtros</strong></h2>
 
-            <input type="checkbox" name="filtros" value="edad">
-            <label for="vehicle1"> Edad</label>&emsp;
+        <input type="checkbox" name="filtros" value="all">
+        <label for="fil_all"> Todos</label><br>
 
-            <input type="checkbox" name="filtros" value="sexo">
-            <label for="vehicle1"> Sexo</label>&emsp;
+        <div class="row mb-2">
 
-            <input type="checkbox" name="filtros" value="fuente_tipo_contagio">
-            <label for="vehicle1"> Tipo de Contagio</label><br>&emsp;
+            <div class="col">
+                <input type="checkbox" name="filtros" value="fecha_reporte_web">
+                <label for="f_notificacion"> Fecha de reporte web </label><br>
+
+                <input type="checkbox" name="filtros" value="departamento_nom">
+                <label for="f_notificacion"> Departamento</label> <br>
+
+                <input type="checkbox" name="filtros" value="ciudad_municipio_nom">
+                <label for="f_notificacion"> Ciudad / Municipio</label> <br>
+
+                <input type="checkbox" name="filtros" value="fecha_de_notificaci_n">
+                <label for="f_notificacion"> Fecha de notificacion </label><br>
+            </div>
+
+            <div class="col">
+
+                <input type="checkbox" name="filtros" value="fuente_tipo_contagio">
+                <label for="vehicle1"> Tipo de Contagio</label><br>
+
+                <input type="checkbox" name="filtros" value="pais_viajo_1_nom">
+                <label for="vehicle1"> Pais de donde viajo</label><br>
+
+                <input type="checkbox" name="filtros" value="fecha_muerte">
+                <label for="vehicle3"> Fecha Muerte</label><br>
+
+            </div>
+
+            <div class="col">
+
+                <input type="checkbox" name="filtros" value="fecha_inicio_sintomas">
+                <label for="vehicle1"> Fecha de inicio de Sintomas</label> <br>
+
+                <input type="checkbox" name="filtros" value="fecha_diagnostico">
+                <label for="vehicle1"> Fecha de Diagnostico</label> <br>
+
+                <input type="checkbox" name="filtros" value="tipo_recuperacion">
+                <label for="vehicle1"> Tipo recuperacion</label><br>
+
+                <input type="checkbox" name="filtros" value="fecha_recuperado">
+                <label for="vehicle1"> Fecha de Recuperacion</label><br>
+
+            </div>
+
+
+            <div class="col">
+
+                <input type="checkbox" name="filtros" value="edad">
+                <label for="vehicle1"> Edad</label><br>
+
+                <input type="checkbox" name="filtros" value="sexo">
+                <label for="vehicle1"> Sexo</label><br>
+
+                <input type="checkbox" name="filtros" value="ubicacion">
+                <label for="vehicle1"> Ubicacion</label><br>
+
+                <input type="checkbox" name="filtros" value="estado">
+                <label for="vehicle1"> Estado</label> <br>
+
+
+
+            </div>
+
 
         </div>
 
-        <div class="col">
+        <button class="btn btn-elegant btn-block mb-2">Enviar</button>
 
-            <input type="checkbox" name="filtros" value="ubicacion">
-            <label for="vehicle1"> Ubicacion</label>&emsp;
+    </form>
+</div>
+<hr>
+<div class="container">
 
-            <input type="checkbox" name="filtros" value="estado">
-            <label for="vehicle1"> Estado</label> &emsp;
 
-            <input type="checkbox" name="filtros" value="tipo_recuperacion">
-            <label for="vehicle1"> Tipo recuperacion</label><br> <br> &emsp;
+    <strong><h1>Consultas</h1></strong>
+    <hr>
+    <p>
+        Cuantos hombres y mujeres trajeron el virus de "X" país.
+    </p>
+
+    <form class="form-inline" action="{{ url_for('view_consult_pais') }} " method="POST">
+        <div class="md-form mb-4 mt-n2">
+            <input type="text" id="pais" name="pais" class="form-control">
+            <label for="pais">Ingrese el Pais</label>
+            <button class="btn btn-elegant btn-sm">Buscar</button>
         </div>
 
+    </form>
+    <hr>
+    <p>
+        Resumen de casos registrados por día, con fecha inicio y fecha fin dada por el usuario
+    </p>
 
-    </div>
+    <form class="form-inline" action="{{ url_for('view_consult_fecha') }} " method="POST">
+        <div class="md-form mb-4 mt-n2">
+            <input class="form-control" type="text" id="inicio" name="inicio">
+            <label for="inicio">Ingrese fecha inicio</label>
+            <small class="form-text text-muted mt-n2">Use el formato: dd-mm-aaaa</small>
+            <!-- button class="btn btn-elegant btn-sm">Buscar</button> -->
+        </div>
+        <div class="md-form mb-4 mt-n2">
+            <input class="form-control" type="text" id="fin" name="fin">
+            <label for="fin">Ingrese fecha fin</label>
+            <small class="form-text text-muted mt-n2">Use el formato: dd-mm-aaaa</small>
+        </div>
+        <button class="btn btn-elegant btn-sm">Buscar</button>
 
+    </form>
+    <hr>
+    <p>
+        Resumen de casos de fallecidos por Covid-19, con fecha inicio y fecha fin dada por el usuario
+    </p>
 
+    <form class="form-inline" action="{{ url_for('view_consult_muertos') }} " method="POST">
+        <div class="md-form mb-4 mt-n2">
+            <input class="form-control" type="text" id="inicio2" name="inicio">
+            <label for="inicio2">Ingrese fecha inicio</label>
+            <small class="form-text text-muted mt-n2">Use el formato: dd-mm-aaaa</small>
+            <!-- button class="btn btn-elegant btn-sm">Buscar</button> -->
+        </div>
+        <div class="md-form mb-4 mt-n2">
+            <input class="form-control" type="text" id="fin2" name="fin">
+            <label for="fin2">Ingrese fecha fin</label>
+            <small class="form-text text-muted mt-n2">Use el formato: dd-mm-aaaa</small>
+        </div>
+        <button class="btn btn-elegant btn-sm">Buscar</button>
+    </form>
+    <hr>
+    <p>
+        Cuantos hombres y mujeres han tenido Covid-19 en "X" ciudad.
+    </p>
 
+    <form class="form-inline" action="{{ url_for('view_consult_ciudad') }} " method="POST">
+        <div class="md-form mb-4 mt-n2">
+            <input type="text" id="ciudad" name="ciudad">
+            <label for="ciudad">Ingrese la ciudad</label>
+            <button class="btn btn-elegant btn-sm">Buscar</button>
+        </div>
+    </form>
 
-
-
-
-
-
-
-
-    <button>Enviar</button>
-</form>
-
-<h1>Consultas</h1>
-
-<p>
-    Cuantos hombres y mujeres trajeron el virus de "X" país.
-</p>
-
-<form action="{{ url_for('view_consult_pais') }} " method="POST">
-    <input type="texto" name="pais" placeholder="Ingrese el Pais">
-    <button>Buscar</button>
-</form>
-<p>
-    Resumen de casos registrados por día, con fecha inicio y fecha fin dada por el usuario
-</p>
-
-<form action="{{ url_for('view_consult_fecha') }} " method="POST">
-    <input type="texto" name="inicio" placeholder="Ingrese fecha inicio con formato: dd-mm-aaaa">
-    <input type="texto" name="fin" placeholder="Ingrese fecha fin con formato: dd-mm-aaaa">
-    <button>Buscar</button>
-</form>
-<p>
-    Resumen de casos de fallecidos por Covid-19, con fecha inicio y fecha fin dada por el usuario
-</p>
-
-<form action="{{ url_for('view_consult_muertos') }} " method="POST">
-    <input type="texto" name="inicio" placeholder="Ingrese fecha inicio con formato: dd-mm-aaaa">
-    <input type="texto" name="fin" placeholder="Ingrese fecha fin con formato: dd-mm-aaaa">
-    <button>Buscar</button>
-</form>
-<p>
-    Cuantos hombres y mujeres han tenido Covid-19 en "X" ciudad.
-</p>
-
-<form action="{{ url_for('view_consult_ciudad') }} " method="POST">
-    <input type="texto" name="ciudad" placeholder="Ingrese la ciudad">
-    <button>Buscar</button>
-</form>
+    <hr>
+</div>
 
 {% endblock %}
 

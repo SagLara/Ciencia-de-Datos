@@ -15,7 +15,7 @@ client = Socrata("www.datos.gov.co", None)
 
 # First 1000000 results, returned as JSON from API / converted to Python list of
 # dictionaries by sodapy.
-results = client.get("gt2j-8ykr", limit=1000000)
+results = client.get("gt2j-8ykr", limit=1200000) #12000000
 
 # Convert to pandas DataFrame
 results_df = pd.DataFrame.from_records(results)
@@ -27,6 +27,7 @@ results_df['sexo']=results_df['sexo'].str.upper()
 results_df['fecha_reporte_web'] = results_df['fecha_reporte_web'].apply(dateutil.parser.parse)
 casos_muertos=results_df[results_df['estado']=='Fallecido']
 casos_muertos['fecha_muerte'] = casos_muertos.loc[:,'fecha_muerte'].apply(dateutil.parser.parse)
+
 def resultVirusPais(dataframe, pais):
   importados=dataframe[dataframe['fuente_tipo_contagio']=='Importado']
   up=pais.upper()
@@ -50,6 +51,7 @@ def resultMuertosPorDia(results_df,inicio,fin):
   result=resultadosDia.groupby('fecha_muerte',as_index=False)['departamento'].count()
   resultado=result.rename(columns={'fecha_muerte': 'fecha muerte','departamento': 'Fallecidos'})
   return resultado
+
 def resultVirusCiudad(dataframe, ciudad):
   up=ciudad.upper()
   result=dataframe[dataframe['ciudad_municipio_nom']==up]
@@ -118,13 +120,15 @@ def view_consult_pais():
 def view_consult_fecha():
     inicio= request.form.get("inicio")
     fin = request.form.get("fin")
+    print("CONSULT: ",inicio," HASTA:",fin)
     res= resultCasosPorDia(results_df,str(inicio),str(fin))
     result= pd.DataFrame(res)
-    #print("CONSULT: ",dato," HASTA:",rango)
+    
     #view = results_df.loc[int(dato):int(rango),:]
     #table=df.to_html(header="true", table_id="table")
     #return render_template("dataframe.html",nombre=nombre,table=table)
     return result.to_html(header="true", table_id="table")
+
 @app.route("/consulta 3", methods=["POST"])
 def view_consult_muertos():
     inicio= request.form.get("inicio")
@@ -136,6 +140,7 @@ def view_consult_muertos():
     #table=df.to_html(header="true", table_id="table")
     #return render_template("dataframe.html",nombre=nombre,table=table)
     return result.to_html(header="true", table_id="table")
+
 @app.route("/consulta 4", methods=["POST"])
 def view_consult_ciudad():
     ciudad = request.form.get("ciudad")
@@ -146,6 +151,7 @@ def view_consult_ciudad():
     #table=df.to_html(header="true", table_id="table")
     #return render_template("consulta-1.html",pais=pais)
     return result.to_html(header="true", table_id="table")
+
 if __name__ == "__main__":
     app.run(debug=True, port= 5000) 
 
